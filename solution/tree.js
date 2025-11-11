@@ -1,21 +1,20 @@
 class TreeNode {
-  #data;
+  #value;
   left;
   right;
 
-  constructor(data) {
-    this.#data = data;
+  constructor(value) {
+    this.#value = value;
     this.left = null;
     this.right = null;
   }
 
-  get data() {
-    return this.#data;
+  get value() {
+    return this.#value;
   }
 }
 
 export class Tree {
-  #arr;
   #root;
 
   constructor(arr) {
@@ -23,10 +22,33 @@ export class Tree {
     const uniqueSortedArr = [...new Set(arr)].sort((a, b) => a - b);
     console.log(uniqueSortedArr);
 
-    this.#arr = uniqueSortedArr;
     this.#root = this.#buildTree(uniqueSortedArr);
+  }
 
+  insert(value) {
+    this.#root = this.#insertNode(this.#root, value);
+  }
+
+  printTree() {
     this.#prettyPrint(this.#root);
+  }
+
+  #insertNode(node, value) {
+    // Insert if position is empty
+    if (node === null) return new TreeNode(value);
+
+    // If value is smaller, insert to left subtree
+    if (value < node.value) {
+      node.left = this.#insertNode(node.left, value);
+    }
+
+    // If value is larger, insert to right subtree
+    if (value > node.value) {
+      node.right = this.#insertNode(node.right, value);
+    }
+
+    // Return updated root
+    return node;
   }
 
   #buildTree(arr) {
@@ -58,7 +80,7 @@ export class Tree {
         false
       );
     }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
     if (node.left !== null) {
       this.#prettyPrint(
         node.left,
