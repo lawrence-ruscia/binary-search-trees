@@ -1,16 +1,12 @@
 class TreeNode {
-  #value;
+  value;
   left;
   right;
 
   constructor(value) {
-    this.#value = value;
+    this.value = value;
     this.left = null;
     this.right = null;
-  }
-
-  get value() {
-    return this.#value;
   }
 }
 
@@ -27,6 +23,10 @@ export class Tree {
 
   insert(value) {
     this.#root = this.#insertNode(this.#root, value);
+  }
+
+  delete(value) {
+    this.#root = this.#deleteNode(this.#root, value);
   }
 
   printTree() {
@@ -48,6 +48,46 @@ export class Tree {
     }
 
     // Return updated root
+    return node;
+  }
+
+  #deleteNode(node, value) {
+    if (node === null) return null;
+
+    if (value < node.value) {
+      node.left = this.#deleteNode(node.left, value);
+    }
+    if (value > node.value) {
+      node.right = this.#deleteNode(node.right, value);
+    }
+    if (value === node.value) {
+      // Case A: Node is a leaf
+      if (node.left === null && node.right === null) {
+        return null;
+      }
+
+      // Case B: Node has one child
+      if (node.left === null) {
+        return node.right;
+      }
+      if (node.right === null) {
+        return node.left;
+      }
+
+      // Case C: Node has two children
+      const successor = this.#findSuccessor(node.right);
+      node.value = successor.value;
+      node.right = this.#deleteNode(node.right, successor.value);
+    }
+
+    return node;
+  }
+
+  #findSuccessor(node) {
+    while (node.left !== null) {
+      node = node.left;
+    }
+
     return node;
   }
 

@@ -7,3 +7,7 @@ tree.insert(5);
 tree.insert(10);
 tree.insert(25);
 tree.printTree();
+
+tree.delete(23);
+console.log('----After deletion----');
+tree.printTree();
