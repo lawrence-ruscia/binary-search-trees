@@ -12,6 +12,5 @@ const printNodes = (node) => {
   console.log(node.value);
 };
 
-const height = tree.height(25);
-const depth = tree.depth(25);
-console.log({ height, depth });
+const isBalanced = tree.isBalanced();
+console.log({ isBalanced });

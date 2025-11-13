@@ -83,6 +83,10 @@ export class Tree {
     return this.#depthFindValue(this.#root, value, 0);
   }
 
+  isBalanced() {
+    return this.#checkBalance(this.#root) !== -1;
+  }
+
   #insertNode(node, value) {
     // Insert if position is empty
     if (node === null) return new TreeNode(value);
@@ -245,6 +249,25 @@ export class Tree {
     } else {
       return this.#depthFindValue(node.right, value, currentDepth + 1);
     }
+  }
+
+  #checkBalance(node) {
+    // Base case: empty subtree has height 0
+    if (node === null) return 0;
+
+    // Recursively compute the height of left & right subtree
+
+    const leftHeight = this.#checkBalance(node.left);
+    if (leftHeight === -1) return -1;
+
+    const rightHeight = this.#checkBalance(node.right);
+    if (rightHeight === -1) return -1;
+
+    // If the difference in heights is more than 1, it's unbalanced
+    if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+
+    // Otherwise, return the height of this node (1 + tallest subtree)
+    return 1 + Math.max(leftHeight, rightHeight);
   }
 
   #buildTree(arr) {
