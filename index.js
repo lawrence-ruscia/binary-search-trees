@@ -12,14 +12,6 @@ const printNodes = (node) => {
   console.log(node.value);
 };
 
-// In-order Traversal
-console.log('In-order Traversal');
-tree.inOrderForEach(printNodes);
-
-// Pre-order Traversal
-console.log('Pre-order Traversal');
-tree.preOrderForEach(printNodes);
-
-// Post-order Traversal
-console.log('Post-order Traversal');
-tree.postOrderForEach(printNodes);
+const height = tree.height(25);
+const depth = tree.depth(25);
+console.log({ height, depth });

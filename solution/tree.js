@@ -74,6 +74,15 @@ export class Tree {
     this.#postOrderRec(this.#root, callback);
   }
 
+  height(value = this.#root.value) {
+    const node = this.find(value);
+    return this.#heightFindValue(node);
+  }
+
+  depth(value) {
+    return this.#depthFindValue(this.#root, value, 0);
+  }
+
   #insertNode(node, value) {
     // Insert if position is empty
     if (node === null) return new TreeNode(value);
@@ -215,6 +224,27 @@ export class Tree {
     this.#postOrderRec(node.left, callback);
     this.#postOrderRec(node.right, callback);
     callback(node);
+  }
+
+  #heightFindValue(node) {
+    if (node === null) return -1;
+
+    const leftHeight = this.#heightFindValue(node.left);
+    const rightHeight = this.#heightFindValue(node.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  #depthFindValue(node, value, currentDepth) {
+    if (node === null) return -1;
+
+    if (node.value === value) return currentDepth;
+
+    if (value < node.value) {
+      return this.#depthFindValue(node.left, value, currentDepth + 1);
+    } else {
+      return this.#depthFindValue(node.right, value, currentDepth + 1);
+    }
   }
 
   #buildTree(arr) {
