@@ -8,6 +8,11 @@ tree.insert(10);
 tree.insert(25);
 tree.printTree();
 
-const node = tree.find(23);
+const printNodes = (node) => {
+  console.log(node.value);
+};
 
-console.log({ node });
+console.log('Recursive');
+tree.levelOrderForEach(printNodes, 'recursive');
+console.log('Iterative');
+tree.levelOrderForEach(printNodes, 'iterative');

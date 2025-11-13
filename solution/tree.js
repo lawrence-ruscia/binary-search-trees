@@ -37,6 +37,64 @@ export class Tree {
     return this.#findNode(this.#root, value);
   }
 
+  levelOrderForEach(callback, type = 'recursive') {
+    if (!callback) {
+      throw new Error('A callback is required.');
+    }
+
+    if (type === 'recursive') {
+      this.#levelOrderRec(callback);
+    }
+    if (type === 'iterative') {
+      this.#levelOrderIter(callback);
+    }
+  }
+
+  #levelOrderIter(callback) {
+    if (this.#root === null) return;
+
+    // Store unvisited nodes
+    const queue = [];
+    queue.push(this.#root);
+
+    while (queue.length !== 0) {
+      const node = queue.shift(); // Remove element to visit
+
+      // Visit node
+      callback(node);
+
+      // Add children to visit to the queue
+      if (node.left !== null) {
+        queue.push(node.left);
+      }
+      if (node.right !== null) {
+        queue.push(node.right);
+      }
+    }
+  }
+
+  #levelOrderRec(callback) {
+    const result = [];
+
+    function traverse(node, level) {
+      if (node === null) return;
+
+      // Create a new sublist if this is the first time visiting this level
+      if (result.length === level) {
+        result.push([]);
+      }
+
+      callback(node);
+
+      result[level].push(node.value);
+      // Recurse left and right with incremented level
+      traverse(node.left, level + 1);
+      traverse(node.right, level + 1);
+    }
+
+    traverse(this.#root, 0);
+  }
+
   #insertNode(node, value) {
     // Insert if position is empty
     if (node === null) return new TreeNode(value);
