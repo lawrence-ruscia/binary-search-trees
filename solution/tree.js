@@ -90,7 +90,6 @@ export class Tree {
   rebalance() {
     const sortedValues = [];
     this.#inOrderSorter(this.#root, sortedValues);
-    console.log(sortedValues);
 
     this.#root = this.#sortedArrayToBST(
       sortedValues,
