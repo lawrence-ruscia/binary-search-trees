@@ -87,6 +87,18 @@ export class Tree {
     return this.#checkBalance(this.#root) !== -1;
   }
 
+  rebalance() {
+    const sortedValues = [];
+    this.#inOrderSorter(this.#root, sortedValues);
+    console.log(sortedValues);
+
+    this.#root = this.#sortedArrayToBST(
+      sortedValues,
+      0,
+      sortedValues.length - 1
+    );
+  }
+
   #insertNode(node, value) {
     // Insert if position is empty
     if (node === null) return new TreeNode(value);
@@ -307,5 +319,13 @@ export class Tree {
         true
       );
     }
+  }
+
+  #inOrderSorter(node, list = []) {
+    if (node === null) return;
+
+    this.#inOrderSorter(node.left, list);
+    list.push(node.value);
+    this.#inOrderSorter(node.right, list);
   }
 }
