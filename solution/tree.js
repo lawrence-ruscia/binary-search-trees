@@ -33,6 +33,10 @@ export class Tree {
     this.#prettyPrint(this.#root);
   }
 
+  find(value) {
+    return this.#findNode(this.#root, value);
+  }
+
   #insertNode(node, value) {
     // Insert if position is empty
     if (node === null) return new TreeNode(value);
@@ -86,6 +90,22 @@ export class Tree {
   #findSuccessor(node) {
     while (node.left !== null) {
       node = node.left;
+    }
+
+    return node;
+  }
+
+  #findNode(node, value) {
+    if (node === null) return null;
+
+    if (value === node.value) {
+      return node;
+    }
+    if (value < node.value) {
+      return this.#findNode(node.left, value);
+    }
+    if (value > node.value) {
+      return this.#findNode(node.right, value);
     }
 
     return node;
