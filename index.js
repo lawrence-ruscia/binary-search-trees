@@ -12,7 +12,14 @@ const printNodes = (node) => {
   console.log(node.value);
 };
 
-console.log('Recursive');
-tree.levelOrderForEach(printNodes, 'recursive');
-console.log('Iterative');
-tree.levelOrderForEach(printNodes, 'iterative');
+// In-order Traversal
+console.log('In-order Traversal');
+tree.inOrderForEach(printNodes);
+
+// Pre-order Traversal
+console.log('Pre-order Traversal');
+tree.preOrderForEach(printNodes);
+
+// Post-order Traversal
+console.log('Post-order Traversal');
+tree.postOrderForEach(printNodes);

@@ -38,8 +38,8 @@ export class Tree {
   }
 
   levelOrderForEach(callback, type = 'recursive') {
-    if (!callback) {
-      throw new Error('A callback is required.');
+    if (!callback || typeof callback !== 'function') {
+      throw new Error('A callback is required');
     }
 
     if (type === 'recursive') {
@@ -50,49 +50,28 @@ export class Tree {
     }
   }
 
-  #levelOrderIter(callback) {
-    if (this.#root === null) return;
-
-    // Store unvisited nodes
-    const queue = [];
-    queue.push(this.#root);
-
-    while (queue.length !== 0) {
-      const node = queue.shift(); // Remove element to visit
-
-      // Visit node
-      callback(node);
-
-      // Add children to visit to the queue
-      if (node.left !== null) {
-        queue.push(node.left);
-      }
-      if (node.right !== null) {
-        queue.push(node.right);
-      }
+  inOrderForEach(callback) {
+    if (!callback || typeof callback !== 'function') {
+      throw new Error('A callback is required');
     }
+
+    this.#inOrderRec(this.#root, callback);
   }
 
-  #levelOrderRec(callback) {
-    const result = [];
-
-    function traverse(node, level) {
-      if (node === null) return;
-
-      // Create a new sublist if this is the first time visiting this level
-      if (result.length === level) {
-        result.push([]);
-      }
-
-      callback(node);
-
-      result[level].push(node.value);
-      // Recurse left and right with incremented level
-      traverse(node.left, level + 1);
-      traverse(node.right, level + 1);
+  preOrderForEach(callback) {
+    if (!callback || typeof callback !== 'function') {
+      throw new Error('A callback is required');
     }
 
-    traverse(this.#root, 0);
+    this.#preOrderRec(this.#root, callback);
+  }
+
+  postOrderForEach(callback) {
+    if (!callback || typeof callback !== 'function') {
+      throw new Error('A callback is required');
+    }
+
+    this.#postOrderRec(this.#root, callback);
   }
 
   #insertNode(node, value) {
@@ -167,6 +146,75 @@ export class Tree {
     }
 
     return node;
+  }
+
+  #levelOrderIter(callback) {
+    if (this.#root === null) return;
+
+    // Store unvisited nodes
+    const queue = [];
+    queue.push(this.#root);
+
+    while (queue.length !== 0) {
+      const node = queue.shift(); // Remove element to visit
+
+      // Visit node
+      callback(node);
+
+      // Add children to visit to the queue
+      if (node.left !== null) {
+        queue.push(node.left);
+      }
+      if (node.right !== null) {
+        queue.push(node.right);
+      }
+    }
+  }
+
+  #levelOrderRec(callback) {
+    const result = [];
+
+    function traverse(node, level) {
+      if (node === null) return;
+
+      // Create a new sublist if this is the first time visiting this level
+      if (result.length === level) {
+        result.push([]);
+      }
+
+      callback(node);
+
+      result[level].push(node.value);
+      // Recurse left and right with incremented level
+      traverse(node.left, level + 1);
+      traverse(node.right, level + 1);
+    }
+
+    traverse(this.#root, 0);
+  }
+
+  #inOrderRec(node, callback) {
+    if (node === null) return;
+
+    this.#inOrderRec(node.left, callback);
+    callback(node);
+    this.#inOrderRec(node.right, callback);
+  }
+
+  #preOrderRec(node, callback) {
+    if (node === null) return;
+
+    callback(node);
+    this.#preOrderRec(node.left, callback);
+    this.#preOrderRec(node.right, callback);
+  }
+
+  #postOrderRec(node, callback) {
+    if (node === null) return;
+
+    this.#postOrderRec(node.left, callback);
+    this.#postOrderRec(node.right, callback);
+    callback(node);
   }
 
   #buildTree(arr) {
